@@ -9,7 +9,7 @@ function solution(priorities, location) {
 
     while(true){
         const [idx, val] = deque.popFront();
-        if(Object.values(deque.items).find((item)=> item[1] > val)){
+        if(Object.values(deque.items).some((item)=> item[1] > val)){
            deque.pushBack([idx,val]);
         }else{
             count++;
