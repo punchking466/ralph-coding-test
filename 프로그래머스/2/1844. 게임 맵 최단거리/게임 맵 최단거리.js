@@ -1,31 +1,75 @@
-function solution(maps) {
-    const dis = [[-1,0], [1,0], [0,-1], [0,1]];
+function solution(maps){
+    const direction = [[0,1], [0,-1], [1,0], [-1,0]];
     
-    const queue = [[0,0,1]];
-    const visited = Array.from({length : maps.length},
-                               ()=> Array(maps[0].length).fill(false));
+    const N = maps.length; 
+    const M = maps[0].length;
     
-    while(queue.length > 0){
-        const [x, y, count] = queue.shift();
-        if(x === maps.length-1 && y === maps[0].length-1){
-            return count;
+    const queue = new Deque();
+    queue.pushBack([0,0]);
+    maps[0][0] = 1;
+
+    while(!queue.isEmpty()){
+        const [r, c] = queue.popFront();
+        
+        const currentDist = maps[r][c];
+        
+        if(r === N-1 && c === M-1){
+            return currentDist;
         }
         
-        for(let [dx,dy] of dis){
-            let nx = dx + x;
-            let ny = dy + y;
+        for(let [dr, dc] of direction){
+            const nr = r + dr;
+            const nc = c + dc;
             
-            if(nx>=0 &&
-               ny>=0 &&
-               nx<maps.length &&
-               ny<maps[0].length &&
-               maps[nx][ny]>0 &&
-              !visited[nx][ny]){
-                queue.push([nx, ny, count+1]);
-                visited[nx][ny] = true;
+            if(nr>=0 && nr<N && nc>=0 && nc<M){
+                if(maps[nr][nc] === 1){
+                    queue.pushBack([nr,nc]);
+                    maps[nr][nc] = currentDist+1;
+                }
             }
         }
     }
-    
     return -1;
+}
+
+class Deque{
+    constructor(){
+        this.items = {};
+        this.head = 0;
+        this.tail = 0;
+    }
+    
+    pushFront(item){
+        this.head--;
+        this.items[this.head] = item;
+    }
+    
+    pushBack(item){
+        this.items[this.tail] = item;
+        this.tail++
+    }
+    
+    popFront(){
+        if(this.isEmpty()) return undefined;
+        const item = this.items[this.head];
+        delete this.items[this.head];
+        this.head++;
+        return item;
+    }
+    
+    popBack(){
+        if(this.isEmpty()) return undefined;
+        this.tail--;
+        const item = this.items[this.tail];
+        delete this.items[this.tail];
+        return item;
+    }
+    
+    isEmpty(){
+        return this.size() === 0;    
+    }
+    
+    size(){
+        return this.tail - this.head;
+    }
 }
