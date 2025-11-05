@@ -7,7 +7,7 @@ function solution(maps){
     const queue = new Deque();
     queue.pushBack([0,0]);
     maps[0][0] = 1;
-
+    
     while(!queue.isEmpty()){
         const [r, c] = queue.popFront();
         
@@ -34,25 +34,25 @@ function solution(maps){
 
 class Deque{
     constructor(){
-        this.items = {};
+        this.items = new Map();
         this.head = 0;
         this.tail = 0;
     }
     
     pushFront(item){
         this.head--;
-        this.items[this.head] = item;
+        this.items.set(this.head, item);
     }
     
     pushBack(item){
-        this.items[this.tail] = item;
+        this.items.set(this.tail, item)
         this.tail++
     }
     
     popFront(){
         if(this.isEmpty()) return undefined;
-        const item = this.items[this.head];
-        delete this.items[this.head];
+        const item = this.items.get(this.head);
+        this.items.delete(this.head);
         this.head++;
         return item;
     }
@@ -60,8 +60,8 @@ class Deque{
     popBack(){
         if(this.isEmpty()) return undefined;
         this.tail--;
-        const item = this.items[this.tail];
-        delete this.items[this.tail];
+        const item = this.items.get(this.tail);
+        this.items.delete(this.tail);
         return item;
     }
     
