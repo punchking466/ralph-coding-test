@@ -1,9 +1,17 @@
 function solution(n) {
-    let dp = [1, 1];
-    
-    for(let i=2; i<=n; i++){
-        dp[i] = (dp[i-1] + dp[i-2])%1000000007;
+    if (n === 1) return 1 % 1000000007;
+    if (n === 2) return 1 % 1000000007;
+    let last1 = 1;
+    let last2 = 1;
+    let result = 0;
+
+    for (let i = 2; i <= n; i++) {
+        result = last1 + last2 > 1000000007
+                ? (last1 + last2) % 1000000007
+                :  last1 + last2;
+        last1 = last2;
+        last2 = result;
     }
-    
-    return dp[n];
+
+    return result;
 }
