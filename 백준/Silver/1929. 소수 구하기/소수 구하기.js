@@ -1,25 +1,21 @@
 function solution(input) {
   const [n, m] = input.split(" ").map(Number);
-  const primes = [];
-  let start = n;
+  const isPrime = Array(m + 1).fill(true);
+  isPrime[0] = isPrime[1] = false;
 
-  while (start <= m) {
-    if (getPrime(start)) {
-      primes.push(start);
+  for (let i = 2; i * i <= m; i++) {
+    if (isPrime[i]) {
+      for (let j = i * i; j <= m; j += i) {
+        isPrime[j] = false;
+      }
     }
-    start++;
   }
-  return primes.join("\n");
-}
 
-function getPrime(n) {
-  if (n === 0 || n === 1) return false;
-  if (n === 2) return true;
-
-  for (let i = 2; i * i <= n; i++) {
-    if (n % i === 0) return false;
+  const reulst = [];
+  for (let i = n; i <= m; i++) {
+    if (isPrime[i]) reulst.push(i);
   }
-  return true;
+  return reulst.join("\n");
 }
 let input = require('fs').readFileSync(0, 'utf-8').trim();
 console.log(solution(input));
