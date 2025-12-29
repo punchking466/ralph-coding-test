@@ -39,9 +39,9 @@ function solution(input) {
 
 class Deque {
   constructor() {
-    this.items = {};
-    this.head = 0;
-    this.tail = 0;
+    this.items = new Array(2000000);
+    this.head = 1000000;
+    this.tail = 1000000;
   }
   peekHead() {
     if (this.isEmpty()) return -1;
@@ -55,22 +55,13 @@ class Deque {
     this.items[--this.head] = item;
   }
   push(item) {
-    this.items[this.tail] = item;
-    this.tail++;
+    this.items[this.tail++] = item;
   }
   shift() {
-    if (this.isEmpty()) return -1;
-    const item = this.items[this.head];
-    delete this.items[this.head];
-    this.head++;
-    return item;
+    return this.isEmpty() ? -1 : this.items[this.head++];
   }
   pop() {
-    if (this.isEmpty()) return -1;
-    this.tail--;
-    const item = this.items[this.tail];
-    delete this.items[this.tail];
-    return item;
+    return this.isEmpty() ? -1 : this.items[--this.tail];
   }
   isEmpty() {
     return this.size() === 0;
